@@ -4,7 +4,9 @@ import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
 import { PROFILE_LIST } from "@/lib/profiles";
 import { getHomeStats } from "@/lib/queries";
 import { CityRail } from "@/components/home/city-rail";
-import { HeroVisual, HeroVisualSkeleton } from "@/components/home/hero-visual";
+import { HeroBackground, HeroHighlights, HeroHighlightsSkeleton } from "@/components/home/hero-visual";
+import Image from "next/image";
+import { HERO_IMAGE } from "@/lib/images";
 import { HomeNav } from "@/components/home/home-nav";
 import { LenisScroll } from "@/components/lenis-scroll";
 import { DarkFooter } from "@/components/home/site-footer";
@@ -36,14 +38,19 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(60%_55%_at_30%_40%,black,transparent)]"
-        />
-        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 -z-10 size-[40rem] rounded-full bg-emerald-500/[0.12] blur-[120px]" />
-        <div aria-hidden className="pointer-events-none absolute -left-48 bottom-0 -z-10 size-[36rem] rounded-full bg-amber-500/[0.10] blur-[120px]" />
+        <Suspense
+          fallback={
+            <div aria-hidden className="absolute inset-0 -z-10">
+              <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,17,9,0.92)_0%,rgba(6,17,9,0.72)_42%,rgba(6,17,9,0.35)_100%)]" />
+              <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#061109] to-transparent" />
+            </div>
+          }
+        >
+          <HeroBackground />
+        </Suspense>
 
-        <div className="mx-auto grid w-full max-w-[1400px] items-center gap-12 px-5 pb-16 pt-28 sm:px-8 lg:min-h-[max(100svh,760px)] lg:grid-cols-[1fr_0.95fr] lg:gap-16 lg:px-12 lg:pb-20 lg:pt-32">
+        <div className="mx-auto grid w-full max-w-[1400px] items-center gap-12 px-5 pb-16 pt-28 sm:px-8 min-h-[100svh] lg:grid-cols-[1fr_0.9fr] lg:gap-16 lg:px-12 lg:pb-20 lg:pt-32">
           <div className="max-w-[40rem]">
             <Reveal>
               <Suspense fallback={<Pill>Loading the map…</Pill>}>
@@ -100,9 +107,9 @@ export default function HomePage() {
             </Reveal>
           </div>
 
-          <Reveal from="right" delay={120}>
-            <Suspense fallback={<HeroVisualSkeleton />}>
-              <HeroVisual />
+          <Reveal from="right" delay={120} className="hidden lg:block">
+            <Suspense fallback={<HeroHighlightsSkeleton />}>
+              <HeroHighlights />
             </Suspense>
           </Reveal>
         </div>
