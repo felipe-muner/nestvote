@@ -54,7 +54,7 @@ export default function HomePage() {
               <h1 className="mt-7 font-sans text-[2.9rem] font-light leading-[0.98] tracking-[-0.045em] sm:text-7xl lg:text-[clamp(3.2rem,4.6vw,5rem)]">
                 Stop researching
                 <br />
-                <span className="bg-gradient-to-r from-white via-emerald-200 to-amber-300 bg-clip-text pr-[0.12em] font-heading text-[1.08em] italic tracking-[-0.02em] text-transparent">
+                <span className="bg-gradient-to-r from-white via-emerald-200 to-amber-300 bg-clip-text font-heading text-[1.08em] italic leading-[1.08] tracking-[-0.02em] text-transparent [box-decoration-break:clone] [-webkit-box-decoration-break:clone] px-[0.1em] py-[0.06em] -mx-[0.1em]">
                   what someone like you already confirmed.
                 </span>
               </h1>
@@ -271,7 +271,7 @@ export default function HomePage() {
               <Eyebrow>Your turn</Eyebrow>
               <h2 className="mx-auto mt-6 max-w-4xl text-balance font-sans text-[2.6rem] font-light leading-[1.02] tracking-[-0.04em] sm:text-7xl">
                 The place that saved your trip?{" "}
-                <span className="bg-gradient-to-r from-white via-emerald-200 to-amber-300 bg-clip-text pr-[0.1em] font-heading italic text-transparent">
+                <span className="bg-gradient-to-r from-white via-emerald-200 to-amber-300 bg-clip-text font-heading italic leading-[1.08] text-transparent [box-decoration-break:clone] [-webkit-box-decoration-break:clone] px-[0.1em] py-[0.06em] -mx-[0.1em]">
                   Someone like you needs it.
                 </span>
               </h2>
