@@ -8,9 +8,10 @@ export const metadata = { title: "Sign in" };
 
 export default function LoginPage() {
   return (
-    <div className="mx-auto max-w-md space-y-8 pt-16 text-center">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Sign in to vote</h1>
+    <div className="mx-auto max-w-md space-y-8 pt-8 text-center">
+      <div className="space-y-3">
+        <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-emerald-300/90">Sign in</p>
+        <h1 className="font-sans text-[2.6rem] font-light leading-[1.02] tracking-[-0.04em] sm:text-5xl">Vote as <span className="font-heading italic text-white/55">who you were.</span></h1>
         <p className="text-muted-foreground">
           One account, one vote per profile per place. That is what keeps &ldquo;recommended by 10 volunteers&rdquo; worth something.
         </p>

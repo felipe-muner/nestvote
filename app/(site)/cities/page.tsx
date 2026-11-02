@@ -11,7 +11,7 @@ export default function CitiesPage(props: PageProps<"/cities">) {
   return (
     <Suspense
       fallback={
-        <div className="space-y-6 pt-8">
+        <div className="space-y-6">
           <HeaderSkeleton />
           <CardGridSkeleton count={6} cols="sm:grid-cols-2 lg:grid-cols-3" />
         </div>
@@ -29,9 +29,10 @@ async function CityList({ searchParams }: Pick<PageProps<"/cities">, "searchPara
   const meta = PROFILES[profile];
   const rows = await getCities(q);
   return (
-    <div className="space-y-6 pt-8">
-      <div className="space-y-3">
-        <h1 className="text-4xl">Pick a city</h1>
+    <div className="space-y-8">
+      <div className="space-y-4">
+        <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-emerald-300/90">Cities</p>
+        <h1 className="font-sans text-[2.6rem] font-light leading-[1.02] tracking-[-0.04em] sm:text-6xl">Pick a city. <span className="font-heading italic text-white/55">Then pick who you are.</span></h1>
         <p className="text-muted-foreground">{meta.tagline}</p>
         <div className="light-tabs">
           <ProfileTabs basePath="/cities" active={profile} />

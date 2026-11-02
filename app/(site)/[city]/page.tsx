@@ -81,7 +81,7 @@ async function CityBoard({ params, searchParams }: Pick<PageProps<"/[city]">, "p
         return (
           <section key={cat} className="space-y-4">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-2xl">
+              <h2 className="font-sans text-3xl font-light tracking-[-0.03em]">
                 <span aria-hidden>{CATEGORIES[cat].emoji}</span> {CATEGORIES[cat].question}
               </h2>
               <span className="text-sm text-muted-foreground">

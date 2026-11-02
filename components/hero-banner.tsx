@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 
-/** Full-width photo banner used on city and place pages. */
+/** Contained photo banner used on city, place and tips pages. */
 export function HeroBanner({
   image,
   alt,
@@ -20,14 +20,14 @@ export function HeroBanner({
   compact?: boolean;
 }) {
   return (
-    <section className={`relative left-1/2 w-screen -translate-x-1/2 overflow-hidden ${compact ? "h-56 sm:h-64" : "h-72 sm:h-96"}`}>
-      <Image src={image} alt={alt} fill priority sizes="100vw" className="object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
-      <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-5xl px-4 pb-6 text-white sm:px-6 lg:px-8">
-        {eyebrow ? <div className="mb-1 text-sm text-white/80">{eyebrow}</div> : null}
-        <h1 className="text-4xl leading-tight sm:text-5xl">{title}</h1>
-        {subtitle ? <p className="mt-2 max-w-2xl text-base text-white/85 sm:text-lg">{subtitle}</p> : null}
-        {children ? <div className="mt-4">{children}</div> : null}
+    <section className={`relative overflow-hidden rounded-[32px] ring-1 ring-white/15 ${compact ? "h-64 sm:h-72" : "h-80 sm:h-[26rem]"}`}>
+      <Image src={image} alt={alt} fill priority sizes="(min-width: 1400px) 1400px, 100vw" className="object-cover motion-safe:animate-[kenburns_38s_ease-in-out_infinite_alternate]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#061109] via-[#061109]/40 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-10">
+        {eyebrow ? <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/70">{eyebrow}</div> : null}
+        <h1 className="font-sans text-4xl font-light leading-[1.02] tracking-[-0.04em] sm:text-6xl">{title}</h1>
+        {subtitle ? <p className="mt-3 max-w-2xl text-base text-white/75 sm:text-lg">{subtitle}</p> : null}
+        {children ? <div className="mt-5">{children}</div> : null}
       </div>
     </section>
   );

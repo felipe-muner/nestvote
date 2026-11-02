@@ -130,3 +130,21 @@ export async function getHomeStats() {
   ]);
   return { cities: c.n, places: p.n, votes: v.n };
 }
+
+/** The strongest confirmed place per profile, for the home hero. */
+export async function getHeroHighlights() {
+  const rows = await db
+    .select({ place: places, city: cities })
+    .from(places)
+    .innerJoin(cities, eq(cities.id, places.cityId));
+  const withStats = await attachStats(rows.map((r) => r.place));
+  const cityOf = new Map(rows.map((r) => [r.place.id, r.city]));
+  const out: { profile: ProfileId; name: string; city: string; citySlug: string; slug: string; avg: number; votes: number; cost: number | null }[] = [];
+  for (const p of PROFILE_IDS) {
+    const best = withStats.filter((w) => w.stats[p].recommended).sort((a, b) => b.stats[p].votes - a.stats[p].votes)[0];
+    if (!best) continue;
+    const c = cityOf.get(best.id)!;
+    out.push({ profile: p, name: best.name, city: c.name, citySlug: c.slug, slug: best.slug, avg: best.stats[p].avg, votes: best.stats[p].votes, cost: best.stats[p].medianMonthlyCostUsd });
+  }
+  return out;
+}

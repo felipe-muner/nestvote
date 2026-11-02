@@ -173,3 +173,31 @@
   .marquee-track { animation: none; }
   .marquee-viewport { overflow-x: auto; }
 }
+
+@keyframes kenburns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.14) translate3d(-2.5%, -2%, 0); }
+}
+
+/* NestVote dark shell: the same palette as the home page, flowing into every shadcn token. */
+.theme-nest {
+  --background: #061109;
+  --foreground: #eef6f0;
+  --card: #0a1a11;
+  --card-foreground: #eef6f0;
+  --popover: #0a1a11;
+  --popover-foreground: #eef6f0;
+  --primary: #34d399;
+  --primary-foreground: #061109;
+  --secondary: rgba(255, 255, 255, 0.06);
+  --secondary-foreground: #eef6f0;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(238, 246, 240, 0.55);
+  --accent: rgba(255, 255, 255, 0.06);
+  --accent-foreground: #eef6f0;
+  --destructive: #f87171;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #34d399;
+  --radius: 1rem;
+}

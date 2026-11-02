@@ -6,9 +6,10 @@ export const metadata = { title: "Add a place" };
 
 export default function SubmitPage(props: PageProps<"/submit">) {
   return (
-    <div className="mx-auto max-w-2xl space-y-6 pt-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Add a place</h1>
+    <div className="mx-auto max-w-2xl space-y-8">
+      <div className="space-y-3">
+        <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-emerald-300/90">Contribute</p>
+        <h1 className="font-sans text-[2.6rem] font-light leading-[1.02] tracking-[-0.04em] sm:text-5xl">Add a place.</h1>
         <p className="text-muted-foreground">
           A hostel, a farm that takes volunteers, a café with real wifi, a beach club worth the money. Add it once, then
           vote on it as the profile you were.

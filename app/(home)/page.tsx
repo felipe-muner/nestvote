@@ -4,18 +4,12 @@ import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
 import { PROFILE_LIST } from "@/lib/profiles";
 import { getHomeStats } from "@/lib/queries";
 import { CityRail } from "@/components/home/city-rail";
-import { HeroStage } from "@/components/home/hero-stage";
+import { HeroVisual, HeroVisualSkeleton } from "@/components/home/hero-visual";
 import { HomeNav } from "@/components/home/home-nav";
 import { LenisScroll } from "@/components/lenis-scroll";
-import { LogoMark } from "@/components/logo";
+import { DarkFooter } from "@/components/home/site-footer";
 import { Reveal } from "@/components/reveal";
 
-const HERO_PROFILES = PROFILE_LIST.map((p) => ({
-  id: p.id,
-  label: p.label,
-  emoji: p.emoji,
-  blurb: { nomad: "wifi · bed · month", volunteer: "bed & food for help", luxury: "worth the money", expat: "groups · long-term" }[p.id],
-}));
 
 const STEPS = [
   { n: "01", who: "you", title: "Vote as who you were", text: "Rate a place as a nomad, volunteer, lush traveler or expat. One vote per person, per profile, per place. Say how long you stayed and what it cost." },
@@ -41,24 +35,23 @@ export default function HomePage() {
       <HomeNav />
 
       {/* Hero */}
-      <section className="relative isolate flex flex-col overflow-hidden lg:min-h-[max(100svh,780px)]">
+      <section className="relative isolate overflow-hidden">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(60%_55%_at_65%_45%,black,transparent)]"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(60%_55%_at_30%_40%,black,transparent)]"
         />
-        <div aria-hidden className="pointer-events-none absolute -left-48 -top-48 -z-10 size-[44rem] rounded-full bg-amber-500/[0.10] blur-[120px]" />
+        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 -z-10 size-[40rem] rounded-full bg-emerald-500/[0.12] blur-[120px]" />
+        <div aria-hidden className="pointer-events-none absolute -left-48 bottom-0 -z-10 size-[36rem] rounded-full bg-amber-500/[0.10] blur-[120px]" />
 
-        <HeroStage profiles={HERO_PROFILES} />
-
-        <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-5 pb-16 sm:px-8 lg:px-12 lg:pb-14 lg:pt-32">
-          <div className="max-w-[40rem] lg:my-auto lg:max-w-[47%]">
+        <div className="mx-auto grid w-full max-w-[1400px] items-center gap-12 px-5 pb-16 pt-28 sm:px-8 lg:min-h-[max(100svh,760px)] lg:grid-cols-[1fr_0.95fr] lg:gap-16 lg:px-12 lg:pb-20 lg:pt-32">
+          <div className="max-w-[40rem]">
             <Reveal>
               <Suspense fallback={<Pill>Loading the map…</Pill>}>
                 <LivePill />
               </Suspense>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-7 font-sans text-[2.9rem] font-light leading-[0.98] tracking-[-0.045em] sm:text-7xl lg:text-[clamp(3.4rem,5vw,5.4rem)]">
+              <h1 className="mt-7 font-sans text-[2.9rem] font-light leading-[0.98] tracking-[-0.045em] sm:text-7xl lg:text-[clamp(3.2rem,4.6vw,5rem)]">
                 Stop researching
                 <br />
                 <span className="bg-gradient-to-r from-white via-emerald-200 to-amber-300 bg-clip-text pr-[0.12em] font-heading text-[1.08em] italic tracking-[-0.02em] text-transparent">
@@ -72,7 +65,18 @@ export default function HomePage() {
                 their votes apart, so &ldquo;5 stars from 10 volunteers&rdquo; means exactly that.
               </p>
             </Reveal>
-            <Reveal delay={240} className="mt-10 flex flex-wrap items-center gap-3">
+            <Reveal delay={240} className="mt-8 flex flex-wrap gap-2">
+              {PROFILE_LIST.map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/cities?profile=${p.id}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-2 text-sm text-white/80 backdrop-blur transition-colors hover:border-emerald-400/60 hover:text-white"
+                >
+                  <span aria-hidden>{p.emoji}</span> {p.label}
+                </Link>
+              ))}
+            </Reveal>
+            <Reveal delay={300} className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/cities"
                 className="group inline-flex h-[52px] items-center gap-3 rounded-full bg-white pl-1.5 pr-6 text-[15px] font-medium text-[#061109] shadow-[0_12px_44px_-12px_rgba(52,211,153,0.75)] transition hover:-translate-y-0.5"
@@ -89,19 +93,24 @@ export default function HomePage() {
                 Add a place <ArrowUpRight className="size-4" />
               </Link>
             </Reveal>
+            <Reveal delay={360} className="mt-12">
+              <Suspense fallback={<StatsSkeleton />}>
+                <Stats />
+              </Suspense>
+            </Reveal>
           </div>
 
-          <Reveal delay={320} className="mt-14 max-w-[40rem] lg:mt-0 lg:max-w-[47%]">
-            <Suspense fallback={<StatsSkeleton />}>
-              <Stats />
+          <Reveal from="right" delay={120}>
+            <Suspense fallback={<HeroVisualSkeleton />}>
+              <HeroVisual />
             </Suspense>
           </Reveal>
         </div>
       </section>
 
       {/* Marquee */}
-      <div className="marquee-viewport relative overflow-hidden border-y border-white/[0.06] bg-white/[0.012] py-5 [--marquee-duration:70s] [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]">
-        <div className="marquee-track">
+      <div className="relative overflow-hidden border-y border-white/[0.06] bg-white/[0.012] py-5 [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]">
+        <div className="flex w-max motion-safe:animate-[marquee_70s_linear_infinite]">
           {[0, 1].map((copy) => (
             <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0 items-center">
               {["Where to sleep", "Where to eat", "Where to work", "Where to have fun", "Where to meet people", "Groups to join", "Monthly rates", "Discounts locals get", "Voted by nomads", "Voted by volunteers", "Voted by lush travelers", "Voted by expats"].map((t) => (
@@ -286,24 +295,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative overflow-hidden px-5 pt-16 sm:px-8 lg:px-12">
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-3 font-mono text-[10.5px] uppercase tracking-[0.2em] text-white/35 sm:flex-row sm:items-center sm:justify-between">
-          <span className="flex items-center gap-2">
-            <LogoMark size={16} nest="#F59E0B" check="#34D399" /> NestVote · open source on{" "}
-            <a className="underline" href="https://github.com/felipe-muner/nestvote" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-          </span>
-          <span>Sample cities and votes are fictional until real ones replace them.</span>
-        </div>
-        <div className="relative mt-10">
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-[radial-gradient(55%_100%_at_50%_120%,rgba(16,185,129,0.3),transparent_70%)]" />
-          <p aria-hidden className="relative -mb-[0.14em] select-none whitespace-nowrap bg-gradient-to-b from-white/80 via-white/25 to-white/0 bg-clip-text text-center font-heading text-[17vw] italic leading-none tracking-[-0.04em] text-transparent">
-            NestVote
-          </p>
-        </div>
-      </footer>
+      <DarkFooter />
     </div>
   );
 }
