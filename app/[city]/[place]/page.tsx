@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { BadgeCheck, ExternalLink, Laptop, MapPin, Sprout } from "lucide-react";
 import { auth } from "@/lib/auth";
@@ -30,6 +31,7 @@ export default function PlacePage(props: PageProps<"/[city]/[place]">) {
 }
 
 async function PlaceDetail({ params, searchParams }: Pick<PageProps<"/[city]/[place]">, "params" | "searchParams">) {
+  await connection();
   const [{ city: citySlug, place: placeSlug }, sp, session] = await Promise.all([params, searchParams, auth()]);
   const place = await getPlace(citySlug, placeSlug);
   if (!place) notFound();

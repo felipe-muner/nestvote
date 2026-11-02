@@ -57,10 +57,8 @@ export function ShareCard({
                   border: s.recommended ? "2px solid rgba(52,211,153,0.9)" : "2px solid rgba(255,255,255,0.12)",
                 }}
               >
-                <div style={{ fontSize: 24, opacity: 0.9 }}>
-                  {meta.emoji} {meta.label}
-                </div>
-                <div style={{ fontSize: 44, fontWeight: 700, marginTop: 6 }}>{s.votes > 0 ? `${s.avg.toFixed(1)} ★` : "—"}</div>
+                <div style={{ fontSize: 24, opacity: 0.9 }}>{`${meta.emoji} ${meta.label}`}</div>
+                <div style={{ fontSize: 44, fontWeight: 700, marginTop: 6 }}>{s.votes > 0 ? `${s.avg.toFixed(1)} / 5` : "no votes"}</div>
                 <div style={{ fontSize: 22, opacity: 0.8 }}>
                   {s.votes > 0 ? `${s.votes} ${s.votes === 1 ? "vote" : "votes"}${s.recommended ? " · recommended" : ""}` : "no votes yet"}
                 </div>

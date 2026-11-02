@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   title: { default: "NestVote", template: "%s · NestVote" },
   description:
     "Where to sleep, eat, work and have fun, voted by people who travel like you: digital nomads, volunteers, lush travelers and expats.",
-  metadataBase: new URL(process.env.AUTH_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ??
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000"),
+  ),
+  openGraph: { siteName: "NestVote", type: "website" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
