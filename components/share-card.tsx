@@ -1,6 +1,7 @@
 import type { ProfileId } from "@/lib/db/schema";
 import { PROFILES, PROFILE_IDS } from "@/lib/profiles";
 import type { ProfileStat } from "@/lib/recommend";
+import { LogoMark } from "@/components/logo";
 
 /**
  * JSX for Open Graph share images (rendered by next/og's ImageResponse, which supports a
@@ -70,22 +71,7 @@ export function ShareCard({
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 26, opacity: 0.85 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              background: "white",
-              color: "#0f172a",
-              fontWeight: 700,
-              fontSize: 26,
-            }}
-          >
-            N
-          </div>
+          <LogoMark size={52} nest="#F59E0B" check="#34D399" />
           NestVote
         </div>
         <div>{footer}</div>
