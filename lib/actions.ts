@@ -171,3 +171,8 @@ export async function signInWithGoogle() {
 export async function signOutAction() {
   await signOut({ redirectTo: "/" });
 }
+
+export async function signInDemo(formData: FormData) {
+  const name = String(formData.get("name") ?? "").trim();
+  await signIn("demo", { name, redirectTo: "/" });
+}

@@ -70,7 +70,7 @@ pnpm db:seed                      # five sample cities with fictional places and
 pnpm dev                          # http://localhost:3000
 ```
 
-Without Google OAuth variables you can browse everything but not vote.
+Without Google OAuth variables a demo sign-in (name only, no password) is enabled so you can vote right away. Set `DEMO_LOGIN=false` to turn it off once real accounts are in place.
 
 ## Project map
 
