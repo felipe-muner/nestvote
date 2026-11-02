@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 export default function HomePage() {
   return (
     <div className="space-y-16">
-      <section className="space-y-6 pt-6 text-center">
+      <section className="relative space-y-6 pt-6 text-center">
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-8 -z-10 mx-auto h-72 max-w-3xl rounded-full bg-gradient-to-b from-emerald-200/40 via-amber-100/30 to-transparent blur-3xl dark:from-emerald-900/30 dark:via-amber-900/10" />
         <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Places voted by people who travel like you</p>
-        <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
+        <h1 className="mx-auto max-w-3xl text-5xl tracking-tight sm:text-6xl">
           Stop researching what someone like you already confirmed.
         </h1>
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground">

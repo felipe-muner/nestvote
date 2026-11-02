@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 
 export function SiteHeader() {
   return (
-    <header className="border-b">
+    <header className="sticky top-0 z-20 border-b bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <span className="grid size-7 place-items-center rounded-lg bg-foreground text-background text-sm">N</span>
-          NestVote
+        <Link href="/" className="flex items-center gap-2">
+          <span className="grid size-7 place-items-center rounded-lg bg-foreground font-heading text-sm text-background">N</span>
+          <span className="font-heading text-lg font-semibold tracking-tight">NestVote</span>
         </Link>
         <nav className="flex items-center gap-2">
           <Button size="sm" variant="ghost" render={<Link href="/submit" />}>Add a place</Button>
