@@ -5,12 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { signOutAction } from "@/lib/actions";
 import { LogoMark } from "@/components/logo";
+import { NavLinks } from "@/components/home/nav-links";
 
-const NAV = [
-  { href: "/cities", label: "Cities" },
-  { href: "/#how", label: "How it works" },
-  { href: "/#why", label: "Why" },
-];
 
 /** Floating glass pill used on every page. */
 export function HomeNav() {
@@ -24,11 +20,7 @@ export function HomeNav() {
             <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 lg:inline">/ voted by people like you</span>
           </Link>
           <div className="hidden items-center md:flex">
-            {NAV.map((item) => (
-              <Link key={item.href} href={item.href} className="rounded-full px-4 py-2 text-sm text-white/60 transition-colors hover:bg-white/[0.06] hover:text-white">
-                {item.label}
-              </Link>
-            ))}
+            <NavLinks />
           </div>
           <div className="flex items-center gap-1">
             <Suspense fallback={<span className="hidden h-8 w-16 rounded-full bg-white/[0.06] sm:block" />}>

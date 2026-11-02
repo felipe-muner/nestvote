@@ -18,7 +18,7 @@ export function LenisScroll() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 1.4,
       // Slightly weighted ease — settles rather than snaps.
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       touchMultiplier: 1.4,
@@ -42,7 +42,7 @@ export function LenisScroll() {
       const target = document.getElementById(href.slice(1));
       if (!target) return;
       event.preventDefault();
-      lenis.scrollTo(target, { offset: -80 });
+      lenis.scrollTo(target, { offset: -72, duration: 1.8, easing: (x) => 1 - Math.pow(1 - x, 4) });
       window.history.pushState(null, "", href);
     }
     document.addEventListener("click", onClick);
