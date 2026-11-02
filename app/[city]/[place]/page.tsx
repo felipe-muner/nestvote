@@ -8,10 +8,11 @@ import { getPlace } from "@/lib/queries";
 import { ProfileBadge } from "@/components/profile-badge";
 import { ReviewForm } from "@/components/review-form";
 import { Stars } from "@/components/stars";
+import { PlaceSkeleton } from "@/components/skeletons";
 
 export default function PlacePage(props: PageProps<"/[city]/[place]">) {
   return (
-    <Suspense fallback={<div className="h-64 animate-pulse rounded-xl border bg-muted/40" />}>
+    <Suspense fallback={<PlaceSkeleton />}>
       <PlaceDetail params={props.params} searchParams={props.searchParams} />
     </Suspense>
   );

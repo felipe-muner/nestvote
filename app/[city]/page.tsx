@@ -6,10 +6,11 @@ import { getCityBoard, getCityBySlug, getCityCostSnapshot, rankForProfile } from
 import { PlaceCard } from "@/components/place-card";
 import { ProfileTabs } from "@/components/profile-tabs";
 import { Button } from "@/components/ui/button";
+import { CityBoardSkeleton } from "@/components/skeletons";
 
 export default function CityPage(props: PageProps<"/[city]">) {
   return (
-    <Suspense fallback={<CitySkeleton />}>
+    <Suspense fallback={<CityBoardSkeleton />}>
       <CityBoard params={props.params} searchParams={props.searchParams} />
     </Suspense>
   );
@@ -79,20 +80,6 @@ async function CityBoard({ params, searchParams }: Pick<PageProps<"/[city]">, "p
           Nothing here yet. <Link className="underline" href={`/submit?city=${city.slug}`}>Add the first place</Link>.
         </p>
       ) : null}
-    </div>
-  );
-}
-
-function CitySkeleton() {
-  return (
-    <div className="space-y-4">
-      <div className="h-8 w-48 animate-pulse rounded bg-muted" />
-      <div className="h-4 w-80 animate-pulse rounded bg-muted" />
-      <div className="grid gap-3 sm:grid-cols-2">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="h-32 animate-pulse rounded-xl border bg-muted/40" />
-        ))}
-      </div>
     </div>
   );
 }

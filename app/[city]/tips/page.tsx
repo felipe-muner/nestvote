@@ -9,10 +9,18 @@ import { ProfileBadge } from "@/components/profile-badge";
 import { ProfileTabs } from "@/components/profile-tabs";
 import { TipForm } from "@/components/tip-form";
 import { Button } from "@/components/ui/button";
+import { HeaderSkeleton, ListSkeleton } from "@/components/skeletons";
 
 export default function TipsPage(props: PageProps<"/[city]/tips">) {
   return (
-    <Suspense fallback={<div className="h-64 animate-pulse rounded-xl border bg-muted/40" />}>
+    <Suspense
+      fallback={
+        <div className="space-y-8">
+          <HeaderSkeleton />
+          <ListSkeleton />
+        </div>
+      }
+    >
       <Tips params={props.params} searchParams={props.searchParams} />
     </Suspense>
   );
