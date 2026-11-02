@@ -120,3 +120,13 @@ export async function getTips(cityId: string) {
     .where(eq(tips.cityId, cityId))
     .orderBy(desc(tips.helpfulCount), desc(tips.createdAt));
 }
+
+/** Headline numbers for the home page. */
+export async function getHomeStats() {
+  const [[c], [p], [v]] = await Promise.all([
+    db.select({ n: count() }).from(cities),
+    db.select({ n: count() }).from(places),
+    db.select({ n: count() }).from(reviews),
+  ]);
+  return { cities: c.n, places: p.n, votes: v.n };
+}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
-import { SiteFooter, SiteHeader } from "@/components/site-header";
 
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"] });
 const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], axes: ["opsz", "SOFT"] });
@@ -21,11 +20,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${manrope.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">
-        <SiteHeader />
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-8 sm:px-6 lg:px-8">{children}</main>
-        <SiteFooter />
-      </body>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );
 }
