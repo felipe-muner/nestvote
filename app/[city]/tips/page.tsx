@@ -9,6 +9,8 @@ import { ProfileBadge } from "@/components/profile-badge";
 import { ProfileTabs } from "@/components/profile-tabs";
 import { TipForm } from "@/components/tip-form";
 import { Button } from "@/components/ui/button";
+import { HeroBanner } from "@/components/hero-banner";
+import { coverFor } from "@/lib/images";
 import { HeaderSkeleton, ListSkeleton } from "@/components/skeletons";
 
 export default function TipsPage(props: PageProps<"/[city]/tips">) {
@@ -37,20 +39,20 @@ async function Tips({ params, searchParams }: Pick<PageProps<"/[city]/tips">, "p
 
   return (
     <div className="space-y-8">
-      <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">
+      <HeroBanner
+        compact
+        image={coverFor(city.slug)}
+        alt={city.name}
+        eyebrow={
           <Link className="underline" href={`/${city.slug}?profile=${profile}`}>
             {city.name}
-          </Link>{" "}
-          · insider tips
-        </p>
-        <h1 className="text-3xl font-bold tracking-tight">The inside track in {city.name}</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Groups to join, long-term prices, discounts and advice that people who live here share so you do not pay the
-          three-day-tourist rate.
-        </p>
+          </Link>
+        }
+        title={`The inside track in ${city.name}`}
+        subtitle="Groups to join, long-term prices, discounts and advice from people who live here, so you do not pay the three-day-tourist rate."
+      >
         <ProfileTabs basePath={`/${city.slug}/tips`} active={profile} />
-      </div>
+      </HeroBanner>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">For {PROFILES[profile].plural}</h2>

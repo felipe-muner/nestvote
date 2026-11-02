@@ -1,84 +1,124 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, BadgeCheck, Users, Vote } from "lucide-react";
+import { HERO_IMAGE } from "@/lib/images";
 import { PROFILE_LIST } from "@/lib/profiles";
 import { getCities } from "@/lib/queries";
+import { CityCard } from "@/components/city-card";
+import { CardGridSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   return (
-    <div className="space-y-16">
-      <section className="relative space-y-6 pt-6 text-center">
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-8 -z-10 mx-auto h-72 max-w-3xl rounded-full bg-gradient-to-b from-emerald-200/40 via-amber-100/30 to-transparent blur-3xl dark:from-emerald-900/30 dark:via-amber-900/10" />
-        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Places voted by people who travel like you</p>
-        <h1 className="mx-auto max-w-3xl text-5xl tracking-tight sm:text-6xl">
-          Stop researching what someone like you already confirmed.
-        </h1>
-        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-          A digital nomad, a volunteer, a lush traveler and an expat need different things from the same city. NestVote
-          keeps their votes apart, so &ldquo;5 stars from 10 volunteers&rdquo; means exactly that.
-        </p>
-        <form action="/cities" className="mx-auto flex max-w-md gap-2">
-          <input
-            name="q"
-            type="search"
-            placeholder="Search a city or country"
-            className="h-10 flex-1 rounded-lg border bg-background px-3 text-sm"
-            aria-label="Search a city or country"
-          />
-          <Button type="submit" size="lg">
-            Search
-          </Button>
-        </form>
+    <div className="space-y-20">
+      {/* Hero */}
+      <section className="relative -mx-4 h-[34rem] overflow-hidden sm:-mx-6 lg:-mx-8">
+        <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
+        <div className="relative mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 text-center text-white">
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.25em] text-white/80">Places voted by people who travel like you</p>
+          <h1 className="max-w-3xl text-5xl leading-[1.05] sm:text-7xl">Stop researching what someone like you already confirmed.</h1>
+          <p className="mt-5 max-w-2xl text-lg text-white/85">
+            A digital nomad, a volunteer, a lush traveler and an expat need different things from the same city. NestVote keeps
+            their votes apart, so &ldquo;5 stars from 10 volunteers&rdquo; means exactly that.
+          </p>
+          <form action="/cities" className="mt-8 flex w-full max-w-lg gap-2 rounded-full bg-white/95 p-1.5 shadow-lg">
+            <input
+              name="q"
+              type="search"
+              placeholder="Where are you going?"
+              className="h-11 flex-1 rounded-full bg-transparent px-4 text-base text-foreground outline-none placeholder:text-muted-foreground"
+              aria-label="Search a city or country"
+            />
+            <Button type="submit" size="lg" className="rounded-full px-6">
+              Search
+            </Button>
+          </form>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {PROFILE_LIST.map((p) => (
+              <Link
+                key={p.id}
+                href={`/cities?profile=${p.id}`}
+                className="rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 text-sm backdrop-blur transition-colors hover:bg-white/20"
+              >
+                {p.emoji} {p.label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">How do you travel?</h2>
+      {/* Cities */}
+      <section className="space-y-5">
+        <div className="flex items-end justify-between">
+          <div>
+            <h2 className="text-3xl">Cities</h2>
+            <p className="text-muted-foreground">Pick one, then pick who you are.</p>
+          </div>
+          <Button variant="outline" render={<Link href="/cities" />}>
+            All cities <ArrowRight className="size-4" />
+          </Button>
+        </div>
+        <Suspense fallback={<CardGridSkeleton count={6} cols="sm:grid-cols-2 lg:grid-cols-3" />}>
+          <CityGrid />
+        </Suspense>
+      </section>
+
+      {/* Profiles */}
+      <section className="space-y-5">
+        <div>
+          <h2 className="text-3xl">How do you travel?</h2>
+          <p className="text-muted-foreground">Every rating is given as one of these four. That is the whole idea.</p>
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {PROFILE_LIST.map((p) => (
             <Link
               key={p.id}
               href={`/cities?profile=${p.id}`}
-              className="group flex flex-col gap-2 rounded-xl border p-5 transition-colors hover:bg-accent/40"
+              className={`group flex flex-col gap-3 rounded-2xl border p-6 transition-shadow hover:shadow-md ${p.color}`}
             >
-              <div className="flex items-center gap-2">
-                <span className="text-2xl" aria-hidden>
+              <div className="flex items-center gap-3">
+                <span className="grid size-11 place-items-center rounded-xl bg-white/70 text-2xl shadow-sm dark:bg-black/30" aria-hidden>
                   {p.emoji}
                 </span>
-                <h3 className="text-lg font-semibold group-hover:underline">{p.label}</h3>
+                <h3 className="text-2xl">{p.label}</h3>
               </div>
-              <p className="text-sm text-muted-foreground">{p.tagline}</p>
-              <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium">
-                Pick a city <ArrowRight className="size-4" />
+              <p className="text-sm opacity-90">{p.tagline}</p>
+              <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold">
+                Pick a city <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Cities</h2>
-          <Button variant="ghost" size="sm" render={<Link href="/submit" />}>Add a place</Button>
-        </div>
-        <Suspense fallback={<CityGridSkeleton />}>
-          <CityGrid />
-        </Suspense>
+      {/* How it works */}
+      <section className="grid gap-6 rounded-3xl border bg-muted/30 p-8 sm:grid-cols-3">
+        {[
+          { icon: Vote, title: "Vote as who you were", body: "Rate a place as a nomad, volunteer, lush traveler or expat. One vote per person, per profile, per place." },
+          { icon: BadgeCheck, title: "Enough votes confirm it", body: "Three or more people of a profile averaging 4 stars make a place recommended for that profile. Long stays weigh more." },
+          { icon: Users, title: "Expats share the inside track", body: "Facebook and WhatsApp groups, long-term rates and discounts that a three-day tourist never hears about." },
+        ].map((s) => (
+          <div key={s.title} className="space-y-2">
+            <s.icon className="size-6" />
+            <h3 className="text-xl">{s.title}</h3>
+            <p className="text-sm text-muted-foreground">{s.body}</p>
+          </div>
+        ))}
       </section>
 
-      <section className="grid gap-6 rounded-xl border bg-muted/30 p-6 sm:grid-cols-3">
-        <div>
-          <h3 className="font-semibold">1. Vote as who you were</h3>
-          <p className="text-sm text-muted-foreground">Rate a place as a nomad, volunteer, lush traveler or expat. One vote per profile per place.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">2. Enough votes make it recommended</h3>
-          <p className="text-sm text-muted-foreground">Three or more people of a profile averaging 4 stars confirm a place for that profile. No single opinion decides.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">3. Expats share the inside track</h3>
-          <p className="text-sm text-muted-foreground">Facebook and WhatsApp groups, long-term rates and discounts that a tourist on a three-day trip never hears about.</p>
-        </div>
+      {/* Why */}
+      <section className="mx-auto max-w-3xl space-y-4 text-center">
+        <h2 className="text-3xl">Why this exists</h2>
+        <p className="text-lg text-muted-foreground">
+          I spent three years volunteering around the world with almost no money, then worked online from the same places. Each
+          time I searched for answers hundreds of people before me had already found. Re-searching what previous travelers
+          already confirmed is a waste of everyone&rsquo;s time. This is where those confirmations live.
+        </p>
+        <Button size="lg" render={<Link href="/submit" />}>
+          Add the place that saved your trip
+        </Button>
       </section>
     </div>
   );
@@ -90,28 +130,9 @@ async function CityGrid() {
     return <p className="text-sm text-muted-foreground">No cities yet. Run the seed script or add the first place.</p>;
   }
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {rows.map(({ city, placeCount, voteCount }) => (
-        <Link key={city.id} href={`/${city.slug}`} className="group rounded-xl border p-4 transition-colors hover:bg-accent/40">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <MapPin className="size-3.5" /> {city.country}
-          </div>
-          <h3 className="font-semibold group-hover:underline">{city.name}</h3>
-          {city.tagline ? <p className="line-clamp-2 text-sm text-muted-foreground">{city.tagline}</p> : null}
-          <p className="mt-2 text-xs text-muted-foreground">
-            {placeCount} places · {voteCount} votes
-          </p>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-function CityGridSkeleton() {
-  return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {[0, 1, 2].map((i) => (
-        <div key={i} className="h-28 animate-pulse rounded-xl border bg-muted/40" />
+        <CityCard key={city.id} city={city} placeCount={placeCount} voteCount={voteCount} href={`/${city.slug}`} />
       ))}
     </div>
   );

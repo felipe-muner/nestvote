@@ -14,7 +14,7 @@ export function PlaceCard({ place, citySlug, profile }: { place: PlaceWithStats;
     <Link
       href={`/${citySlug}/${place.slug}`}
       className={cn(
-        "group flex flex-col gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-accent/40",
+        "group flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm transition-shadow hover:shadow-md",
         s.recommended && "border-emerald-400/60 dark:border-emerald-500/40",
       )}
     >
@@ -24,7 +24,7 @@ export function PlaceCard({ place, citySlug, profile }: { place: PlaceWithStats;
             {cat.emoji} {cat.label}
             {place.priceLevel ? <span className="ml-2">{"$".repeat(place.priceLevel)}</span> : null}
           </p>
-          <h3 className="font-semibold leading-tight group-hover:underline">{place.name}</h3>
+          <h3 className="text-xl leading-tight group-hover:underline">{place.name}</h3>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-1">
           {s.votes > 0 ? (

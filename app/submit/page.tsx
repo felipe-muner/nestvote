@@ -6,7 +6,7 @@ export const metadata = { title: "Add a place" };
 
 export default function SubmitPage(props: PageProps<"/submit">) {
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl space-y-6 pt-8">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Add a place</h1>
         <p className="text-muted-foreground">

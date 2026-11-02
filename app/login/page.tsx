@@ -8,7 +8,7 @@ export const metadata = { title: "Sign in" };
 
 export default function LoginPage() {
   return (
-    <div className="mx-auto max-w-md space-y-8 pt-10 text-center">
+    <div className="mx-auto max-w-md space-y-8 pt-16 text-center">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Sign in to vote</h1>
         <p className="text-muted-foreground">

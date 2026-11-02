@@ -13,7 +13,7 @@ export function ProfileTabs({ basePath, active }: { basePath: string; active: Pr
           href={`${basePath}?profile=${p.id}`}
           className={cn(
             "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors",
-            p.id === active ? "border-foreground bg-foreground text-background" : "hover:bg-accent",
+            p.id === active ? "border-white bg-white text-black shadow" : "border-white/40 bg-white/10 text-white backdrop-blur hover:bg-white/20 [.light-tabs_&]:border-border [.light-tabs_&]:bg-transparent [.light-tabs_&]:text-foreground [.light-tabs_&]:hover:bg-accent",
           )}
           aria-current={p.id === active ? "page" : undefined}
         >
