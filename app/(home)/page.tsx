@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BadgePercent, BedDouble, CalendarDays, Laptop, MessageCircle, PartyPopper, Plus, Users, UtensilsCrossed } from "lucide-react";
 import { PROFILE_LIST } from "@/lib/profiles";
 import { getHomeStats } from "@/lib/queries";
 import { CityRail } from "@/components/home/city-rail";
@@ -17,6 +17,21 @@ const STEPS = [
   { n: "01", who: "you", title: "Vote as who you were", text: "Rate a place as a nomad, volunteer, lush traveler or expat. One vote per person, per profile, per place. Say how long you stayed and what it cost." },
   { n: "02", who: "everyone", title: "Enough votes confirm it", text: "Three or more people of a profile averaging four stars make a place recommended for that profile. Long stays weigh more than weekends." },
   { n: "03", who: "expats", title: "The inside track", text: "Facebook and WhatsApp groups, monthly rates, discounts and advice from people who live there, so you never pay the three-day-tourist price." },
+] as const;
+
+const MARQUEE = [
+  { label: "Where to sleep", icon: BedDouble },
+  { label: "Where to eat", icon: UtensilsCrossed },
+  { label: "Where to work", icon: Laptop },
+  { label: "Where to have fun", icon: PartyPopper },
+  { label: "Where to meet people", icon: Users },
+  { label: "Groups to join", icon: MessageCircle },
+  { label: "Monthly rates", icon: CalendarDays },
+  { label: "Discounts locals get", icon: BadgePercent },
+  { label: "Voted by nomads", emoji: "💻" },
+  { label: "Voted by volunteers", emoji: "🌱" },
+  { label: "Voted by lush travelers", emoji: "🥂" },
+  { label: "Voted by expats", emoji: "🏡" },
 ] as const;
 
 const FAQ = [
@@ -120,9 +135,12 @@ export default function HomePage() {
         <div className="flex w-max motion-safe:animate-[marquee_70s_linear_infinite]">
           {[0, 1].map((copy) => (
             <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0 items-center">
-              {["Where to sleep", "Where to eat", "Where to work", "Where to have fun", "Where to meet people", "Groups to join", "Monthly rates", "Discounts locals get", "Voted by nomads", "Voted by volunteers", "Voted by lush travelers", "Voted by expats"].map((t) => (
-                <li key={t} className="flex items-center whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.28em] text-white/45">
-                  <span className="px-7">{t}</span>
+              {MARQUEE.map((t) => (
+                <li key={t.label} className="flex items-center whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.28em] text-white/55">
+                  <span className="flex items-center gap-3 px-7">
+                    {"icon" in t ? <t.icon className="size-4 text-emerald-300" aria-hidden /> : <span className="text-base leading-none" aria-hidden>{t.emoji}</span>}
+                    {t.label}
+                  </span>
                   <span aria-hidden className="text-amber-400">✦</span>
                 </li>
               ))}
