@@ -234,22 +234,22 @@ export default function HomePage() {
           <Reveal>
             <Eyebrow>Why this exists</Eyebrow>
             <h2 className="mt-5 text-balance font-sans text-[2.6rem] font-light leading-[1.02] tracking-[-0.04em] sm:text-6xl">
-              Three years <span className="font-heading italic text-white/55">with no money.</span>
+              Living abroad <span className="font-heading italic text-white/55">since 2018.</span>
             </h2>
           </Reveal>
           <Reveal delay={100} className="space-y-6 text-lg leading-relaxed text-white/65">
             <p>
-              In 2018, 2019 and 2020 I volunteered around the world: sleeping and eating for free in exchange for a few hours of
-              help, with almost nothing in my pocket and more life in a month than in years at a desk. Later I worked online from
-              the same places.
+              The biggest time investment of living abroad is making sure the place you are going to is really trustworthy.
+              As a volunteer, exchanging my time for a bed, food and experience, I needed to know the host was real. As a coder
+              in cafés, I needed the wifi to actually hold and the food to actually be good. And when the party runs from
+              Saturday 10pm until Monday 6am, I needed to know when to show up.
             </p>
             <p>
-              Each time I searched for the same answers hundreds of people before me had already found. Which hostel really takes
-              volunteers. Which café has wifi that holds a call. Which group gets you the monthly rent instead of the tourist price.
+              Every time, hundreds of people before me already knew the answer, and I had to find it again from scratch.
             </p>
             <p className="text-white">
-              Re-searching what previous travelers already confirmed is a waste of everyone&rsquo;s time. This is where those
-              confirmations live.
+              NestVote is where people upvote places and you trust them by their profile. And where the people who have lived
+              somewhere for a while share the hidden secrets for the best experience possible.
             </p>
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">Felipe Muner, founder</p>
           </Reveal>

@@ -11,15 +11,17 @@ at the same time, and both are true.
 
 ## Why this exists
 
-I spent 2018, 2019 and 2020 volunteering around the world: sleeping and eating for free in
-exchange for a few hours of help, with almost no money and a lot of life experience. Later I
-worked online from the same places. Each time, I searched for the same answers that hundreds
-of people before me had already found: which hostel really takes volunteers, which café has
-wifi that holds a video call, which group to join to get the long-term rent, who to ask for
-the monthly price instead of the tourist price.
+Since 2018 I have been living abroad, and the biggest time investment of that life is
+making sure the place I am going to is really trustworthy. First as a volunteer, exchanging
+my time for accommodation, food and experience, and needing to know the host was real. Then
+as a coder in cafés, needing to be sure the wifi really holds and the food is actually good.
+Or simply knowing the best time to show up when the party runs from Saturday 10pm until
+Monday 6am.
 
-Individually re-searching information that previous travelers have already confirmed is a
-waste of time and energy for everyone. NestVote is where those confirmations live.
+Every time, hundreds of people before me already knew the answer, and I had to find it again
+from scratch. NestVote is a place where people upvote places and we trust them by their
+profile on the platform, and where the people who have been living somewhere for a while
+share the hidden secrets for the best experience possible.
 
 ## How it works
 
