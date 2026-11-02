@@ -20,7 +20,7 @@ export function HeroBanner({
   compact?: boolean;
 }) {
   return (
-    <section className={`relative -mx-4 overflow-hidden sm:-mx-6 lg:-mx-8 ${compact ? "h-56 sm:h-64" : "h-72 sm:h-96"}`}>
+    <section className={`relative left-1/2 w-screen -translate-x-1/2 overflow-hidden ${compact ? "h-56 sm:h-64" : "h-72 sm:h-96"}`}>
       <Image src={image} alt={alt} fill priority sizes="100vw" className="object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
       <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-5xl px-4 pb-6 text-white sm:px-6 lg:px-8">

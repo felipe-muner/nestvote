@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <div className="space-y-20">
       {/* Hero */}
-      <section className="relative -mx-4 h-[34rem] overflow-hidden sm:-mx-6 lg:-mx-8">
+      <section className="relative left-1/2 w-screen -translate-x-1/2 h-[34rem] overflow-hidden">
         <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
         <div className="relative mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 text-center text-white">
