@@ -9,7 +9,7 @@ import { NavLinks } from "@/components/home/nav-links";
 
 
 /** Floating glass pill used on every page. */
-export function HomeNav() {
+export function HomeNav({ onHome = false }: { onHome?: boolean }) {
   return (
     <header className="sticky top-0 z-50 h-0">
       <div className="px-3 pt-3 sm:px-5 sm:pt-4">
@@ -20,7 +20,7 @@ export function HomeNav() {
             <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 lg:inline">/ voted by people like you</span>
           </Link>
           <div className="hidden items-center md:flex">
-            <NavLinks />
+            <NavLinks onHome={onHome} />
           </div>
           <div className="flex items-center gap-1">
             <Suspense fallback={<span className="hidden h-8 w-16 rounded-full bg-white/[0.06] sm:block" />}>

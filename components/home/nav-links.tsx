@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const ITEMS = [
   { id: "cities", label: "Cities", page: "/cities" },
@@ -13,8 +10,7 @@ const ITEMS = [
  * On the home page these are in-page anchors (Lenis animates the scroll);
  * everywhere else they navigate back to the home sections or the cities page.
  */
-export function NavLinks() {
-  const onHome = usePathname() === "/";
+export function NavLinks({ onHome }: { onHome: boolean }) {
   return (
     <>
       {ITEMS.map((item) => (

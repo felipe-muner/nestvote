@@ -49,7 +49,7 @@ export default function HomePage() {
   return (
     <div className="min-h-dvh overflow-x-clip bg-[#061109] text-[#eef6f0] antialiased selection:bg-emerald-500/40">
       <LenisScroll />
-      <HomeNav />
+      <HomeNav onHome />
 
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
