@@ -27,14 +27,14 @@ export default function LoginPage() {
       {demoLoginEnabled ? (
         <form action={signInDemo} className="space-y-3 rounded-xl border bg-card p-4 text-left">
           <div className="space-y-1">
-            <Label htmlFor="name">Demo sign-in: just pick a name</Label>
+            <Label htmlFor="name">Pick a name</Label>
             <Input id="name" name="name" required minLength={2} maxLength={40} placeholder="e.g. Ana from Lisbon" autoComplete="off" />
           </div>
           <Button type="submit" className="w-full">
             Continue
           </Button>
           <p className="text-xs text-muted-foreground">
-            This is the MVP shortcut: no password, no email. Use the same name next time to keep your votes. Real accounts come next.
+            No password, no email. Use the same name next time and your votes stay yours. One vote per name, per profile, per place.
           </p>
         </form>
       ) : null}

@@ -10,6 +10,17 @@ import { ReviewForm } from "@/components/review-form";
 import { Stars } from "@/components/stars";
 import { PlaceSkeleton } from "@/components/skeletons";
 
+export async function generateMetadata(props: PageProps<"/[city]/[place]">) {
+  const { city, place: placeSlug } = await props.params;
+  const place = await getPlace(city, placeSlug);
+  if (!place) return { title: "Not found" };
+  const best = PROFILE_IDS.filter((p) => place.stats[p].recommended).map((p) => PROFILES[p].plural);
+  return {
+    title: `${place.name} · ${place.city.name}`,
+    description: best.length > 0 ? `Recommended for ${best.join(", ")}. ${place.description ?? ""}`.trim() : place.description ?? `${place.name} in ${place.city.name} on NestVote.`,
+  };
+}
+
 export default function PlacePage(props: PageProps<"/[city]/[place]">) {
   return (
     <Suspense fallback={<PlaceSkeleton />}>

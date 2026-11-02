@@ -45,7 +45,7 @@ waste of time and energy for everyone. NestVote is where those confirmations liv
 
 Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind CSS v4 ·
 shadcn/ui · Drizzle ORM + PostgreSQL (Neon in production) · Auth.js v5 with Google ·
-deployed on Vercel.
+deployed on Vercel at nestvote.vercel.app.
 
 ## Tests
 
@@ -70,7 +70,7 @@ pnpm db:seed                      # five sample cities with fictional places and
 pnpm dev                          # http://localhost:3000
 ```
 
-Without Google OAuth variables a demo sign-in (name only, no password) is enabled so you can vote right away. Set `DEMO_LOGIN=false` to turn it off once real accounts are in place.
+Sign-in is name-only for now (no password, no email): pick a name and vote. Google OAuth is wired in `lib/auth.ts` and switches on automatically if `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set.
 
 ## Project map
 

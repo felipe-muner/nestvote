@@ -8,6 +8,16 @@ import { ProfileTabs } from "@/components/profile-tabs";
 import { Button } from "@/components/ui/button";
 import { CityBoardSkeleton } from "@/components/skeletons";
 
+export async function generateMetadata(props: PageProps<"/[city]">) {
+  const { city: slug } = await props.params;
+  const city = await getCityBySlug(slug);
+  if (!city) return { title: "Not found" };
+  return {
+    title: `${city.name}, ${city.country}`,
+    description: city.tagline ?? `Where to sleep, eat, work and have fun in ${city.name}, voted by nomads, volunteers, lush travelers and expats.`,
+  };
+}
+
 export default function CityPage(props: PageProps<"/[city]">) {
   return (
     <Suspense fallback={<CityBoardSkeleton />}>
