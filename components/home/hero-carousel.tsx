@@ -24,14 +24,16 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   return (
     <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
       {slides.map((s, i) => (
-        <div key={s.src} className={`absolute inset-0 transition-opacity duration-[1600ms] ease-in-out ${i === index ? "opacity-100" : "opacity-0"}`}>
+        <div key={s.src} className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${i === index ? "opacity-100" : "opacity-0"}`}>
           <Image
             src={s.src}
             alt=""
             fill
             priority={i === 0}
+            loading="eager"
             sizes="100vw"
-            className={`object-cover ${i === index ? "motion-safe:animate-[kenburns_14s_ease-out_forwards]" : ""}`}
+            style={{ animationDelay: `${i * -7}s` }}
+            className="object-cover motion-safe:animate-[kenburns_30s_ease-in-out_infinite_alternate]"
           />
         </div>
       ))}
