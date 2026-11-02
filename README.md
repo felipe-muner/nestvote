@@ -26,8 +26,9 @@ waste of time and energy for everyone. NestVote is where those confirmations liv
 1. **Vote as who you were.** You rate a place as a nomad, volunteer, lush traveler or expat.
    One vote per person, per profile, per place; re-voting updates your vote.
 2. **Enough votes make a recommendation.** A place is recommended for a profile when at least
-   3 people of that profile rated it and the average is 4 stars or more. No single opinion
-   decides.
+   3 people of that profile rated it and the weighted average is 4 stars or more. Votes are
+   weighted by stay length (1 + ln(1 + days), capped at 6), so two months count more than a
+   weekend but never more than six weekends. No single opinion decides.
 3. **Expats share the inside track.** Facebook and WhatsApp groups, long-term rates, discounts
    and advice that a tourist on a three-day trip never hears about, with a "helpful" vote.
 
@@ -45,6 +46,16 @@ waste of time and energy for everyone. NestVote is where those confirmations liv
 Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind CSS v4 ·
 shadcn/ui · Drizzle ORM + PostgreSQL (Neon in production) · Auth.js v5 with Google ·
 deployed on Vercel.
+
+## Tests
+
+```bash
+pnpm test        # vitest: recommendation rule, weighting, ranking
+pnpm typecheck
+pnpm lint
+```
+
+CI runs lint, typecheck, tests and the production build on every push and pull request.
 
 ## Run it locally
 

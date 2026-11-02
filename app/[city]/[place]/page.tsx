@@ -86,6 +86,12 @@ async function PlaceDetail({ params, searchParams }: Pick<PageProps<"/[city]/[pl
                     </span>
                   )}
                 </p>
+                {s.costReports > 0 ? (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Median cost reported: {s.medianMonthlyCostUsd === 0 ? "free" : `$${s.medianMonthlyCostUsd}/month`} ({s.costReports}{" "}
+                    {s.costReports === 1 ? "report" : "reports"}).
+                  </p>
+                ) : null}
               </div>
             );
           })}

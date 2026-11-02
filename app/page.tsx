@@ -17,6 +17,18 @@ export default function HomePage() {
           A digital nomad, a volunteer, a lush traveler and an expat need different things from the same city. NestVote
           keeps their votes apart, so &ldquo;5 stars from 10 volunteers&rdquo; means exactly that.
         </p>
+        <form action="/cities" className="mx-auto flex max-w-md gap-2">
+          <input
+            name="q"
+            type="search"
+            placeholder="Search a city or country"
+            className="h-10 flex-1 rounded-lg border bg-background px-3 text-sm"
+            aria-label="Search a city or country"
+          />
+          <Button type="submit" size="lg">
+            Search
+          </Button>
+        </form>
       </section>
 
       <section className="space-y-4">

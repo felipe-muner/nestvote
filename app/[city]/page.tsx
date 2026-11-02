@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CATEGORIES, PROFILES, isProfileId } from "@/lib/profiles";
-import { getCityBoard, getCityBySlug, rankForProfile } from "@/lib/queries";
+import { getCityBoard, getCityBySlug, getCityCostSnapshot, rankForProfile } from "@/lib/queries";
 import { PlaceCard } from "@/components/place-card";
 import { ProfileTabs } from "@/components/profile-tabs";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,8 @@ async function CityBoard({ params, searchParams }: Pick<PageProps<"/[city]">, "p
 
   const profile = isProfileId(sp.profile) ? sp.profile : "nomad";
   const meta = PROFILES[profile];
-  const board = await getCityBoard(city.id);
+  const [board, costs] = await Promise.all([getCityBoard(city.id), getCityCostSnapshot(city.id)]);
+  const cost = costs[profile];
   const ranked = rankForProfile(board, profile);
   const recommendedCount = ranked.filter((p) => p.stats[profile].recommended).length;
 
@@ -44,7 +45,16 @@ async function CityBoard({ params, searchParams }: Pick<PageProps<"/[city]">, "p
         </div>
         <p className="text-sm">
           <strong>{recommendedCount}</strong> of {ranked.length} places confirmed for {meta.plural} so far.
+          {cost.reports > 0 ? (
+            <>
+              {" "}
+              {meta.plural[0].toUpperCase() + meta.plural.slice(1)} report a median of{" "}
+              <strong>{cost.medianMonthlyCostUsd === 0 ? "free" : `$${cost.medianMonthlyCostUsd}/month`}</strong> for a place to sleep
+              ({cost.reports} {cost.reports === 1 ? "report" : "reports"}).
+            </>
+          ) : null}
         </p>
+        <p className="text-xs text-muted-foreground">Votes are weighted by stay length: two months counts more than a weekend, never more than six weekends.</p>
       </div>
 
       {meta.needs.map((cat) => {

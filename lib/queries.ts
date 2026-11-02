@@ -1,18 +1,15 @@
-import { and, avg, count, desc, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { cities, places, reviews, tips, users, type City, type Place, type ProfileId } from "@/lib/db/schema";
-import { PROFILE_IDS, RECOMMEND_MIN_AVG, RECOMMEND_MIN_VOTES } from "@/lib/profiles";
+import { PROFILE_IDS } from "@/lib/profiles";
+import { emptyStats, median, summarizeByProfile, type ProfileStat } from "@/lib/recommend";
 
-export type ProfileStat = { profile: ProfileId; avg: number; votes: number; recommended: boolean };
+export { rankForProfile } from "@/lib/recommend";
+export type { ProfileStat };
 export type PlaceWithStats = Place & { stats: Record<ProfileId, ProfileStat>; totalVotes: number };
 
-function emptyStats(): Record<ProfileId, ProfileStat> {
-  return Object.fromEntries(
-    PROFILE_IDS.map((p) => [p, { profile: p, avg: 0, votes: 0, recommended: false }]),
-  ) as Record<ProfileId, ProfileStat>;
-}
-
-export async function getCities() {
+export async function getCities(q?: string) {
+  const query = q?.trim();
   return db
     .select({
       city: cities,
@@ -21,6 +18,7 @@ export async function getCities() {
     })
     .from(cities)
     .leftJoin(places, eq(places.cityId, cities.id))
+    .where(query ? or(ilike(cities.name, `%${query}%`), ilike(cities.country, `%${query}%`)) : undefined)
     .groupBy(cities.id)
     .orderBy(cities.name);
 }
@@ -30,34 +28,30 @@ export async function getCityBySlug(slug: string): Promise<City | undefined> {
   return city;
 }
 
+/** Load every vote for the given places and summarize per place and profile. */
 async function attachStats(rows: Place[]): Promise<PlaceWithStats[]> {
   if (rows.length === 0) return [];
   const ids = rows.map((p) => p.id);
-  const agg = await db
+  const votes = await db
     .select({
       placeId: reviews.placeId,
       profile: reviews.profile,
-      avg: avg(reviews.rating).mapWith(Number),
-      votes: count(reviews.id),
+      rating: reviews.rating,
+      stayDays: reviews.stayDays,
+      monthlyCostUsd: reviews.monthlyCostUsd,
     })
     .from(reviews)
-    .where(sql`${reviews.placeId} in ${ids}`)
-    .groupBy(reviews.placeId, reviews.profile);
+    .where(sql`${reviews.placeId} in ${ids}`);
 
-  const byPlace = new Map<string, Record<ProfileId, ProfileStat>>();
-  for (const a of agg) {
-    const stats = byPlace.get(a.placeId) ?? emptyStats();
-    const avgRounded = Math.round(a.avg * 10) / 10;
-    stats[a.profile] = {
-      profile: a.profile,
-      avg: avgRounded,
-      votes: a.votes,
-      recommended: a.votes >= RECOMMEND_MIN_VOTES && avgRounded >= RECOMMEND_MIN_AVG,
-    };
-    byPlace.set(a.placeId, stats);
+  const byPlace = new Map<string, typeof votes>();
+  for (const v of votes) {
+    const list = byPlace.get(v.placeId) ?? [];
+    list.push(v);
+    byPlace.set(v.placeId, list);
   }
   return rows.map((p) => {
-    const stats = byPlace.get(p.id) ?? emptyStats();
+    const list = byPlace.get(p.id);
+    const stats = list ? summarizeByProfile(list) : emptyStats();
     const totalVotes = PROFILE_IDS.reduce((n, id) => n + stats[id].votes, 0);
     return { ...p, stats, totalVotes };
   });
@@ -69,16 +63,21 @@ export async function getCityBoard(cityId: string): Promise<PlaceWithStats[]> {
   return attachStats(rows);
 }
 
-/** Sort places for one profile: recommended first, then average, then number of votes. */
-export function rankForProfile(list: PlaceWithStats[], profile: ProfileId): PlaceWithStats[] {
-  return [...list].sort((a, b) => {
-    const sa = a.stats[profile];
-    const sb = b.stats[profile];
-    if (sa.recommended !== sb.recommended) return sa.recommended ? -1 : 1;
-    if (sb.avg !== sa.avg) return sb.avg - sa.avg;
-    if (sb.votes !== sa.votes) return sb.votes - sa.votes;
-    return a.name.localeCompare(b.name);
-  });
+export type CostSnapshot = Record<ProfileId, { medianMonthlyCostUsd: number | null; reports: number }>;
+
+/** What each profile reports paying per month for a place to sleep in this city. */
+export async function getCityCostSnapshot(cityId: string): Promise<CostSnapshot> {
+  const rows = await db
+    .select({ profile: reviews.profile, cost: reviews.monthlyCostUsd })
+    .from(reviews)
+    .innerJoin(places, eq(places.id, reviews.placeId))
+    .where(and(eq(places.cityId, cityId), eq(places.category, "sleep"), sql`${reviews.monthlyCostUsd} is not null`));
+  const out = Object.fromEntries(PROFILE_IDS.map((p) => [p, { medianMonthlyCostUsd: null, reports: 0 }])) as CostSnapshot;
+  for (const p of PROFILE_IDS) {
+    const costs = rows.filter((r) => r.profile === p).map((r) => r.cost as number);
+    out[p] = { medianMonthlyCostUsd: median(costs), reports: costs.length };
+  }
+  return out;
 }
 
 export async function getPlace(citySlug: string, placeSlug: string) {

@@ -52,6 +52,11 @@ export function PlaceCard({ place, citySlug, profile }: { place: PlaceWithStats;
             {RECOMMEND_MIN_VOTES - s.votes} more {meta.label.toLowerCase()} vote{RECOMMEND_MIN_VOTES - s.votes === 1 ? "" : "s"} to confirm
           </span>
         ) : null}
+        {s.medianMonthlyCostUsd !== null ? (
+          <span className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground">
+            {s.medianMonthlyCostUsd === 0 ? "Free" : `~$${s.medianMonthlyCostUsd}/mo`} · {s.costReports} {s.costReports === 1 ? "report" : "reports"}
+          </span>
+        ) : null}
         {place.acceptsVolunteers ? (
           <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-muted-foreground">
             <Sprout className="size-3.5" /> Takes volunteers
