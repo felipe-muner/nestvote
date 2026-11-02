@@ -1,69 +1,105 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Suspense } from "react";
+import { ArrowRight, MapPin } from "lucide-react";
+import { PROFILE_LIST } from "@/lib/profiles";
+import { getCities } from "@/lib/queries";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="space-y-16">
+      <section className="space-y-6 pt-6 text-center">
+        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Places voted by people who travel like you</p>
+        <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
+          Stop researching what someone like you already confirmed.
+        </h1>
+        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+          A digital nomad, a volunteer, a lush traveler and an expat need different things from the same city. NestVote
+          keeps their votes apart, so &ldquo;5 stars from 10 volunteers&rdquo; means exactly that.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">How do you travel?</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {PROFILE_LIST.map((p) => (
+            <Link
+              key={p.id}
+              href={`/cities?profile=${p.id}`}
+              className="group flex flex-col gap-2 rounded-xl border p-5 transition-colors hover:bg-accent/40"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <div className="flex items-center gap-2">
+                <span className="text-2xl" aria-hidden>
+                  {p.emoji}
+                </span>
+                <h3 className="text-lg font-semibold group-hover:underline">{p.label}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">{p.tagline}</p>
+              <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium">
+                Pick a city <ArrowRight className="size-4" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Cities</h2>
+          <Button variant="ghost" size="sm" render={<Link href="/submit" />}>Add a place</Button>
+        </div>
+        <Suspense fallback={<CityGridSkeleton />}>
+          <CityGrid />
+        </Suspense>
+      </section>
+
+      <section className="grid gap-6 rounded-xl border bg-muted/30 p-6 sm:grid-cols-3">
+        <div>
+          <h3 className="font-semibold">1. Vote as who you were</h3>
+          <p className="text-sm text-muted-foreground">Rate a place as a nomad, volunteer, lush traveler or expat. One vote per profile per place.</p>
+        </div>
+        <div>
+          <h3 className="font-semibold">2. Enough votes make it recommended</h3>
+          <p className="text-sm text-muted-foreground">Three or more people of a profile averaging 4 stars confirm a place for that profile. No single opinion decides.</p>
+        </div>
+        <div>
+          <h3 className="font-semibold">3. Expats share the inside track</h3>
+          <p className="text-sm text-muted-foreground">Facebook and WhatsApp groups, long-term rates and discounts that a tourist on a three-day trip never hears about.</p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+async function CityGrid() {
+  const rows = await getCities();
+  if (rows.length === 0) {
+    return <p className="text-sm text-muted-foreground">No cities yet. Run the seed script or add the first place.</p>;
+  }
+  return (
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {rows.map(({ city, placeCount, voteCount }) => (
+        <Link key={city.id} href={`/${city.slug}`} className="group rounded-xl border p-4 transition-colors hover:bg-accent/40">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <MapPin className="size-3.5" /> {city.country}
+          </div>
+          <h3 className="font-semibold group-hover:underline">{city.name}</h3>
+          {city.tagline ? <p className="line-clamp-2 text-sm text-muted-foreground">{city.tagline}</p> : null}
+          <p className="mt-2 text-xs text-muted-foreground">
+            {placeCount} places · {voteCount} votes
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function CityGridSkeleton() {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="h-28 animate-pulse rounded-xl border bg-muted/40" />
+      ))}
     </div>
   );
 }

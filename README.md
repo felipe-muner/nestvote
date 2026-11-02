@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NestVote
 
-## Getting Started
+**Live:** https://nestvote.vercel.app · **Code:** https://github.com/felipe-muner/nestvote
 
-First, run the development server:
+Where to sleep, eat, work and have fun, voted by people who travel like you.
+
+A digital nomad, a volunteer, a lush traveler and an expat need different things from the
+same city. Every other travel site mixes their opinions into one star rating. NestVote keeps
+them apart: a place can be "5 stars from 10 volunteers" and "2 stars from 4 lush travelers"
+at the same time, and both are true.
+
+## Why this exists
+
+I spent 2018, 2019 and 2020 volunteering around the world: sleeping and eating for free in
+exchange for a few hours of help, with almost no money and a lot of life experience. Later I
+worked online from the same places. Each time, I searched for the same answers that hundreds
+of people before me had already found: which hostel really takes volunteers, which café has
+wifi that holds a video call, which group to join to get the long-term rent, who to ask for
+the monthly price instead of the tourist price.
+
+Individually re-searching information that previous travelers have already confirmed is a
+waste of time and energy for everyone. NestVote is where those confirmations live.
+
+## How it works
+
+1. **Vote as who you were.** You rate a place as a nomad, volunteer, lush traveler or expat.
+   One vote per person, per profile, per place; re-voting updates your vote.
+2. **Enough votes make a recommendation.** A place is recommended for a profile when at least
+   3 people of that profile rated it and the average is 4 stars or more. No single opinion
+   decides.
+3. **Expats share the inside track.** Facebook and WhatsApp groups, long-term rates, discounts
+   and advice that a tourist on a three-day trip never hears about, with a "helpful" vote.
+
+## Profiles
+
+| Profile | What they need |
+|---|---|
+| 💻 Digital nomad | Work spots with real wifi, a bed for a month, good food, people, a reason to stay |
+| 🌱 Volunteer | Places that give bed and food for help, free or near-free fun, community |
+| 🥂 Lush traveler | Where the money is actually worth it, according to people who paid |
+| 🏡 Expat | The groups, the long-term deals, the discounts, the places locals use |
+
+## Tech stack
+
+Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind CSS v4 ·
+shadcn/ui · Drizzle ORM + PostgreSQL (Neon in production) · Auth.js v5 with Google ·
+deployed on Vercel.
+
+## Run it locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/felipe-muner/nestvote
+cd nestvote
+pnpm install
+cp .env.example .env.local        # set AUTH_SECRET (openssl rand -base64 32)
+docker compose up -d              # local Postgres on port 5433
+pnpm db:push                      # create the schema
+pnpm db:seed                      # five sample cities with fictional places and votes
+pnpm dev                          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Without Google OAuth variables you can browse everything but not vote.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project map
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Area | Where |
+|---|---|
+| Database schema (profiles, cities, places, reviews, tips, votes) | `lib/db/schema.ts` |
+| Queries and the recommendation rule | `lib/queries.ts`, `lib/profiles.ts` |
+| Server actions (vote, add place, share tip, helpful) | `lib/actions.ts` |
+| Pages: home, cities, city board, place, insider tips, add place, login | `app/` |
+| Forms and cards | `components/` |
+| Seed data (fictional) | `scripts/seed.ts` |
 
-## Learn More
+## Sample data
 
-To learn more about Next.js, take a look at the following resources:
+The seed script creates five cities with fictional places, reviewers and tips so the product
+is understandable on first load. Everything it creates is marked `is_sample` and is meant to
+be replaced by real votes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Roadmap
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See [ROADMAP.md](./ROADMAP.md) and the GitHub issues.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](./LICENSE).

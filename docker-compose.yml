@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: nestvote
+      POSTGRES_PASSWORD: nestvote
+      POSTGRES_DB: nestvote
+    ports:
+      - "5433:5432"
+    volumes:
+      - nestvote-db:/var/lib/postgresql/data
+
+volumes:
+  nestvote-db:
